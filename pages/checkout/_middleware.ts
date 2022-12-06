@@ -5,7 +5,7 @@ import { getToken } from "next-auth/jwt";
 export async function middleware(req: NextRequest | any, ev: NextFetchEvent) {
 	const session = await getToken({
 		req,
-		secret: process.env.NEXTAUTH_SECRET! || "",
+		secret: "wdPesjEG3rsRZIKJt20iS5TmpL89hpVcV3oVXuizbVU=",
 	});
 
 	// console.log({ session });
