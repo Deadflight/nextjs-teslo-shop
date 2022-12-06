@@ -45,7 +45,7 @@ export default NextAuth({
 		signIn: "/auth/login",
 		newUser: "/auth/register",
 	},
-	secret: process.env.NEXT_PUBLIC_SECRET,
+	secret: "wdPesjEG3rsRZIKJt20iS5TmpL89hpVcV3oVXuizbVU=",
 
 	// // Callbacks
 	// jwt: {
