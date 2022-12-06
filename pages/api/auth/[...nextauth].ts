@@ -24,7 +24,7 @@ export default NextAuth({
 				},
 			},
 			async authorize(credentials) {
-				console.log({ credentials });
+				// console.log({ credentials });
 				// return { name: 'Juan', correo: 'juan@google.com', role: 'admin' };
 
 				return await dbUsers.checkUserEmailPassword(
@@ -48,9 +48,9 @@ export default NextAuth({
 	secret: process.env.NEXT_PUBLIC_SECRET,
 
 	// // Callbacks
-	// jwt: {
-	// 	// secret: process.env.JWT_SECRET_SEED, // deprecated
-	// },
+	jwt: {
+		secret: process.env.JWT_SECRET_SEED, // deprecated
+	},
 
 	session: {
 		maxAge: 2592000, /// 30d
