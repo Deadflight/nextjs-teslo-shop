@@ -30,10 +30,6 @@
 		"react-slideshow-image": "^3.7.0",
 		"swr": "^1.2.1"
 	},
-	"engines": {
-		"node": ">=14.19.1 <=16.x.x",
-		"npm": ">=6.0.0"
-	},
 	"devDependencies": {
 		"@types/formidable": "^2.0.5",
 		"@types/js-cookie": "^3.0.1",
