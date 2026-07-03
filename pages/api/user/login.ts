@@ -31,10 +31,17 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
 
 const loginUser = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
     
-    const { email = '', password = ''  } = req.body;
+    const { email: rawEmail = '', password: rawPassword = '' } = req.body;
+
+    if (typeof rawEmail !== 'string' || typeof rawPassword !== 'string') {
+        return res.status(400).json({ message: 'Correo o contraseña no válidos' });
+    }
+
+    const email = rawEmail.trim().toLowerCase();
+    const password = rawPassword;
 
     await db.connect();
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: { $eq: email } });
     await db.disconnect();
 
     if ( !user ) {
