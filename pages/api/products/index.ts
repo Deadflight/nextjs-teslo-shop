@@ -21,12 +21,13 @@ export default function handler(
 }
 
 const getProducts = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-	const { gender = "all" } = req.query;
+	const rawGender = req.query.gender;
+	const gender = Array.isArray(rawGender) ? rawGender[0] : rawGender ?? "all";
 
 	let condition = {};
 
-	if (gender !== "all" && SHOP_CONSTANTS.validGenders.includes(`${gender}`)) {
-		condition = { gender };
+	if (gender !== "all" && SHOP_CONSTANTS.validGenders.includes(gender)) {
+		condition = { gender: { $eq: gender } };
 	}
 
 	await db.connect();
