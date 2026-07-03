@@ -95,7 +95,22 @@ const updateProduct = async (
 			}
 		});
 
-		await product.update(req.body);
+		const body = req.body as Partial<IProduct>;
+		const safeUpdate: Partial<IProduct> = {};
+
+		if (typeof body.title === "string") safeUpdate.title = body.title;
+		if (typeof body.description === "string")
+			safeUpdate.description = body.description;
+		if (typeof body.slug === "string") safeUpdate.slug = body.slug;
+		if (Array.isArray(body.images)) safeUpdate.images = body.images;
+		if (Array.isArray(body.tags)) safeUpdate.tags = body.tags;
+		if (Array.isArray(body.sizes)) safeUpdate.sizes = body.sizes;
+		if (typeof body.type === "string") safeUpdate.type = body.type;
+		if (typeof body.gender === "string") safeUpdate.gender = body.gender;
+		if (typeof body.price === "number") safeUpdate.price = body.price;
+		if (typeof body.inStock === "number") safeUpdate.inStock = body.inStock;
+
+		await product.updateOne({ $set: safeUpdate });
 
 		await db.disconnect();
 
