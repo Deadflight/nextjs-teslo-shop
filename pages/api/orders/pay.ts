@@ -10,6 +10,10 @@ type Data = {
     message: string
 }
 
+const isValidPaypalTransactionId = (value: string): boolean => {
+    return /^[A-Za-z0-9_-]{8,64}$/.test(value);
+}
+
 export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
     
     switch( req.method) {
@@ -71,8 +75,14 @@ const payOrder = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
 
     const { transactionId = '', orderId = ''  } = req.body;
 
+    if (!isValidPaypalTransactionId(transactionId)) {
+        return res.status(400).json({ message: 'transactionId inválido' });
+    }
 
-    const { data } = await axios.get<IPaypal.PaypalOrderStatusResponse>( `${ process.env.PAYPAL_ORDERS_URL }/${ transactionId }`, {
+    const paypalOrdersBaseUrl = process.env.PAYPAL_ORDERS_URL || '';
+    const paypalOrderUrl = new URL(`${ paypalOrdersBaseUrl.replace(/\/+$/, '') }/${ encodeURIComponent(transactionId) }`).toString();
+
+    const { data } = await axios.get<IPaypal.PaypalOrderStatusResponse>(paypalOrderUrl, {
         headers: {
             'Authorization': `Bearer ${ paypalBearerToken }`
         }
