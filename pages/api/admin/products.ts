@@ -95,18 +95,40 @@ const updateProduct = async (
 			}
 		});
 
-		const {
-			description,
-			images: updateImages,
-			inStock,
-			price,
-			size,
-			slug,
-			tags,
-			title,
-			type,
-			gender,
-		} = req.body as IProduct;
+		const body = req.body as Partial<IProduct>;
+
+		const isString = (v: unknown): v is string => typeof v === "string";
+		const isNumber = (v: unknown): v is number =>
+			typeof v === "number" && Number.isFinite(v);
+		const isStringArray = (v: unknown): v is string[] =>
+			Array.isArray(v) && v.every((item) => typeof item === "string");
+
+		const description = body.description;
+		const updateImages = body.images;
+		const inStock = body.inStock;
+		const price = body.price;
+		const size = body.size;
+		const slug = body.slug;
+		const tags = body.tags;
+		const title = body.title;
+		const type = body.type;
+		const gender = body.gender;
+
+		if (
+			!isString(description) ||
+			!isStringArray(updateImages) ||
+			!isNumber(inStock) ||
+			!isNumber(price) ||
+			!isStringArray(size) ||
+			!isString(slug) ||
+			!isStringArray(tags) ||
+			!isString(title) ||
+			!isString(type) ||
+			!isString(gender)
+		) {
+			await db.disconnect();
+			return res.status(400).json({ message: "Payload de producto inválido" });
+		}
 
 		const safeUpdate = {
 			description,
