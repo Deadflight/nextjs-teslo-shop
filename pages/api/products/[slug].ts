@@ -24,9 +24,16 @@ async function getProductBySlug(
 	req: NextApiRequest,
 	res: NextApiResponse<Data>
 ) {
+	const slugParam = req.query.slug;
+
+	if (typeof slugParam !== "string") {
+		return res.status(400).json({
+			message: "Slug inválido",
+		});
+	}
+
 	await db.connect();
-	const { slug } = req.query;
-	const product = await Product.findOne({ slug }).lean();
+	const product = await Product.findOne({ slug: { $eq: slugParam } }).lean();
 	await db.disconnect();
 
 	if (!product) {
