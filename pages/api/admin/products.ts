@@ -95,7 +95,33 @@ const updateProduct = async (
 			}
 		});
 
-		await product.update(req.body);
+		const {
+			description,
+			images: updateImages,
+			inStock,
+			price,
+			size,
+			slug,
+			tags,
+			title,
+			type,
+			gender,
+		} = req.body as IProduct;
+
+		const safeUpdate = {
+			description,
+			images: updateImages,
+			inStock,
+			price,
+			size,
+			slug,
+			tags,
+			title,
+			type,
+			gender,
+		};
+
+		await product.update(safeUpdate);
 
 		await db.disconnect();
 
