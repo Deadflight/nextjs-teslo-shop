@@ -73,10 +73,14 @@ const payOrder = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
         return res.status(400).json({ message: 'No se pudo confirmar el token de paypal' })
     }
 
-    const { transactionId = '', orderId = ''  } = req.body;
+    const { transactionId = '', orderId } = req.body;
 
     if (!isValidPaypalTransactionId(transactionId)) {
         return res.status(400).json({ message: 'transactionId inválido' });
+    }
+
+    if (typeof orderId !== 'string' || !/^[a-fA-F0-9]{24}$/.test(orderId)) {
+        return res.status(400).json({ message: 'orderId inválido' });
     }
 
     const paypalOrdersBaseUrl = process.env.PAYPAL_ORDERS_URL || '';
