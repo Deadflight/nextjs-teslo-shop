@@ -69,7 +69,7 @@ const updateProduct = async (
 	try {
 		await db.connect();
 
-		const product = await Product.findById(_id);
+		const product = await Product.findOne({ _id: { $eq: _id } });
 
 		if (!product) {
 			await db.disconnect();
