@@ -38,8 +38,10 @@ export const SideMenu = () => {
 	const [searchTerm, setSearchTerm] = useState("");
 
 	const onSearchTerm = () => {
-		if (searchTerm.trim().length === 0) return;
-		navigateTo(`/search/${searchTerm}`);
+		const trimmedSearchTerm = searchTerm.trim();
+		if (trimmedSearchTerm.length === 0) return;
+		const encodedSearchTerm = encodeURIComponent(trimmedSearchTerm);
+		navigateTo(`/search/${encodedSearchTerm}`);
 	};
 
 	const navigateTo = (url: string) => {
