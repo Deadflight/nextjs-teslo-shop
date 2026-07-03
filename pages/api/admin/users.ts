@@ -41,9 +41,9 @@ const getUsers = async(req: NextApiRequest, res: NextApiResponse<Data>) =>  {
 
 const updateUser = async(req: NextApiRequest, res: NextApiResponse<Data>) =>  {
     
-    const { userId = '', role = '' } = req.body;
-    
-    if ( !isValidObjectId(userId) ) {
+    const { userId, role = '' } = req.body;
+
+    if ( typeof userId !== 'string' || !isValidObjectId(userId) ) {
         return res.status(400).json({ message: 'No existe usuario por ese id' })
     }
 
@@ -53,7 +53,7 @@ const updateUser = async(req: NextApiRequest, res: NextApiResponse<Data>) =>  {
     }
 
     await db.connect();
-    const user = await User.findById( userId );
+    const user = await User.findOne({ _id: { $eq: userId } });
 
     if ( !user ) {
         await db.disconnect();
