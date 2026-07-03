@@ -33,6 +33,12 @@ const registerUser = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
     
     const { email = '', password = '', name = '' } = req.body as { email: string, password: string, name: string };
 
+    if ( typeof email !== 'string' || typeof password !== 'string' || typeof name !== 'string' ) {
+        return res.status(400).json({
+            message: 'Bad request'
+        });
+    }
+
     if ( password.length < 6 ) {
         return res.status(400).json({
             message: 'La contraseña debe de ser de 6 caracteres'
@@ -53,7 +59,7 @@ const registerUser = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
     
     
     await db.connect();
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: { $eq: email } });
 
     if ( user ) {
         return res.status(400).json({
