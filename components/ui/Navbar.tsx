@@ -17,8 +17,10 @@ export const Navbar = () => {
     const [isSearchVisible, setIsSearchVisible] = useState(false);
 
     const onSearchTerm = () => {
-        if( searchTerm.trim().length === 0 ) return;
-        push(`/search/${ searchTerm }`);
+        const trimmedSearchTerm = searchTerm.trim();
+        if( trimmedSearchTerm.length === 0 ) return;
+        const encodedSearchTerm = encodeURIComponent(trimmedSearchTerm);
+        push(`/search/${ encodedSearchTerm }`);
     }
 
     
