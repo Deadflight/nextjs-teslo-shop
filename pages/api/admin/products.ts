@@ -111,7 +111,7 @@ const createProduct = async (
 	req: NextApiRequest,
 	res: NextApiResponse<Data>
 ) => {
-	const { images = [] } = req.body as IProduct;
+	const { images = [], slug } = req.body as IProduct;
 
 	if (images.length < 2) {
 		return res
@@ -119,12 +119,16 @@ const createProduct = async (
 			.json({ message: "El producto debe tener al menos 2 imágenes" });
 	}
 
+	if (typeof slug !== "string" || slug.trim().length === 0) {
+		return res.status(400).json({ message: "Slug inválido" });
+	}
+
 	//TODO: posiblemente tendremos un localhost:3000/products/asdasd.jpg
 
 	try {
 		await db.connect();
 
-		const productInDB = await Product.findOne({ slug: req.body.slug });
+		const productInDB = await Product.findOne({ slug: { $eq: slug } });
 
 		if (productInDB) {
 			await db.disconnect();
