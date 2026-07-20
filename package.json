@@ -15,7 +15,7 @@
 		"@mui/x-data-grid": "^5.5.1",
 		"@paypal/react-paypal-js": "^7.6.0",
 		"@types/bcryptjs": "^2.4.2",
-		"axios": "^0.32.0",
+		"axios": "^0.33.0",
 		"bcryptjs": "^2.4.3",
 		"cloudinary": "^2.7.0",
 		"formidable": "^2.0.1",
